@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DNC Compliance Funnel — Mock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+:root {
+  --heart: #fc4647;
+  --heart-deep: #7b123c;
+  --snow: #ffffff;
+  --charcoal: #282827;
+  --charcoal-100: #f5f5f2;
+  --sandstone: #fff7ed;
+  --spring: #c0ffe2;
+  --muted: #6b6b68;
+  --border: #e2e2dc;
+  --watch: #d97706;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(40,40,39,.06), 0 8px 24px rgba(40,40,39,.04);
+  --font: "Fira Sans","Segoe UI",system-ui,sans-serif;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--charcoal-100);color:var(--charcoal);font-family:var(--font);font-size:15px;line-height:1.45;}
+.app{max-width:1120px;margin:0 auto;padding:var(--space-4) var(--space-5) 56px;}
+
+.topbar{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--space-4);
+  margin-bottom:var(--space-4);position:sticky;top:0;background:var(--charcoal-100);padding-top:var(--space-3);z-index:40;
+}
+.brand-row{display:flex;align-items:center;gap:var(--space-3);}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--heart);color:var(--snow);display:grid;place-items:center;font-weight:700;font-size:16px;}
+.brand-row h1{margin:0;font-size:20px;font-weight:700;letter-spacing:-.02em;}
+.brand-row p{margin:2px 0 0;color:var(--muted);font-size:13px;}
+.mock-pill{font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:var(--sandstone);color:#92400e;border:1px solid #f3d9b1;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle;}
+.meta{text-align:right;color:var(--muted);font-size:12px;}
+
+.filterbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--snow);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;box-shadow:var(--shadow);
+}
+.filterbar .grp{display:flex;flex-direction:column;gap:3px;}
+.filterbar label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
+.select-control,.date-control{
+  border:1px solid var(--border);background:var(--charcoal-100);color:var(--charcoal);border-radius:8px;
+  padding:6px 10px;font-size:13px;font-family:var(--font);
+}
+.chip{border:1px solid var(--border);background:var(--charcoal-100);color:var(--charcoal);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500;cursor:pointer;}
+.chip[aria-pressed="true"]{background:var(--charcoal);color:var(--snow);border-color:var(--charcoal);}
+.chip:disabled{opacity:.4;cursor:not-allowed;}
+.filterbar .spacer{flex:1;}
+.crumb{font-size:12.5px;color:var(--muted);margin-bottom:var(--space-5);}
+.crumb span{color:var(--charcoal);font-weight:600;}
+
+section{margin-bottom:var(--space-5);}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-3);gap:var(--space-3);}
+.section-head h2{margin:0;font-size:16px;font-weight:700;}
+.section-head p{margin:0;color:var(--muted);font-size:12.5px;}
+
+.hero-kpi{
+  background:var(--snow);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:var(--space-4) var(--space-5);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);
+  margin-bottom:var(--space-4);
+}
+.hero-kpi .label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px;}
+.hero-kpi .value{font-size:36px;font-weight:700;letter-spacing:-.03em;}
+.hero-kpi .value.off{color:var(--heart-deep);}
+.hero-kpi .value.on{color:#0f5132;}
+.hero-kpi .sub{font-size:12.5px;color:var(--muted);margin-top:2px;max-width:520px;}
+.hero-kpi .status{font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap;}
+.status.off{background:#fde8e6;color:var(--heart-deep);border:1px solid #f7c4bf;}
+.status.on{background:var(--spring);color:#0f5132;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);margin-bottom:var(--space-5);}
+.kpi{background:var(--snow);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
+.kpi .kpi-name{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
+.kpi .kpi-value{font-size:22px;font-weight:700;letter-spacing:-.02em;}
+.kpi .kpi-meta{font-size:12px;color:var(--muted);margin-top:3px;}
+
+.funnel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3);}
+.card{background:var(--snow);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-4);box-shadow:var(--shadow);}
+.card h3{margin:0 0 2px;font-size:13.5px;font-weight:700;}
+.card .fdesc{margin:0 0 12px;font-size:11.5px;color:var(--muted);}
+.funnel-step{display:grid;grid-template-columns:150px 1fr 48px;gap:10px;align-items:center;margin-bottom:6px;}
+.funnel-step .step-label{font-size:12px;color:var(--charcoal);}
+.funnel-step .bar-wrap{height:22px;background:var(--charcoal-100);border-radius:6px;overflow:hidden;}
+.funnel-step .bar-wrap > i{display:block;height:100%;background:var(--heart);border-radius:6px 0 0 6px;}
+.funnel-step .bar-wrap > i.done{background:#3d9b6e;}
+.funnel-step .step-val{font-size:12px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;}
+
+.stackbar{display:flex;height:28px;border-radius:8px;overflow:hidden;margin:6px 0 10px;border:1px solid var(--border);}
+.stackbar span{height:100%;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--charcoal);}
+.legend .item{display:flex;align-items:center;gap:6px;}
+.legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;}
+
+table.data{width:100%;border-collapse:collapse;font-size:13px;}
+table.data th,table.data td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--border);}
+table.data th{font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:600;}
+table.data tr:hover td{background:var(--charcoal-100);}
+.num{text-align:right !important;font-variant-numeric:tabular-nums;}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;}
+.pill.compliant{background:var(--spring);color:#0f5132;}
+.pill.noncompliant{background:#fde8e6;color:var(--heart-deep);}
+.pill.process{background:var(--sandstone);color:#92400e;}
+
+.footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);}
+
+@media (max-width:800px){
+  .funnel-grid{grid-template-columns:1fr;}
+  .kpi-row{grid-template-columns:1fr;}
+  .funnel-step{grid-template-columns:110px 1fr 40px;}
+}
+    </style>
+  </head>
+  <body>
+    <div class="app">
+
+      <header class="topbar">
+        <div class="brand-row">
+          <div class="logo-mark">A</div>
+          <div>
+            <h1>DNC Compliance Funnel <span class="mock-pill">Mock · fake data</span></h1>
+            <p>AI transcript flag → operational process → downstream action, by domain</p>
+          </div>
+        </div>
+        <div class="meta">Data as of 9/17/2026 3:45 PM</div>
+      </header>
+
+      <div class="filterbar">
+        <div class="grp">
+          <label>Date of Call</label>
+          <input class="date-control" type="text" value="09/01/2026 – 09/17/2026" style="width:180px;">
+        </div>
+        <div class="spacer"></div>
+        <button class="chip" id="chip-director" aria-pressed="true">Director</button>
+        <button class="chip" id="chip-manager">Manager</button>
+        <button class="chip" id="chip-rep" disabled>Rep</button>
+        <select class="select-control" id="personnel-select" style="min-width:160px;"></select>
+      </div>
+      <div class="crumb" id="crumb">Director: All SMB/Homeowner Depts</div>
+
+      <section>
+        <div class="hero-kpi">
+          <div>
+            <div class="label">DNC Non-Compliance Rate</div>
+            <div class="value off" id="kpi-noncompliance">6.7%</div>
+            <div class="sub">Target: 0% · of confirmed DNC requests (excludes false-positive flags), % where the downstream Betti/Dash action was never completed</div>
+          </div>
+          <span class="status off" id="kpi-noncompliance-status">Off Track</span>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="kpi-name">Total AI Transcript Flags</div>
+            <div class="kpi-value" id="kpi-flags">2,050</div>
+            <div class="kpi-meta" id="kpi-flags-meta">Includes ~120 false positives (No DNC)</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-name">Action Completion Rate</div>
+            <div class="kpi-value" id="kpi-completion">87.8%</div>
+            <div class="kpi-meta">Actioned ÷ total flags (all outcomes, incl. false positives)</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-name">Regex ↔ Process Alignment</div>
+            <div class="kpi-value" id="kpi-alignment">91.2%</div>
+            <div class="kpi-meta">Flag &amp; operational signal agree — a detection question, separate from action completion</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Funnels by Domain</h2>
+          <p>Top of funnel = AI Transcript Flag (source of truth) for every domain · always shown in full, not filtered by grain</p>
+        </div>
+        <div class="funnel-grid">
+
+          <div class="card">
+            <h3>Sales</h3>
+            <p class="fdesc">Flag → direct Betti action, no operational step</p>
+            <div class="funnel-step"><span class="step-label">AI Transcript Flag</span><div class="bar-wrap"><i style="width:100%"></i></div><span class="step-val">450</span></div>
+            <div class="funnel-step"><span class="step-label">Actioned in Betti</span><div class="bar-wrap"><i class="done" style="width:91%"></i></div><span class="step-val">410</span></div>
+          </div>
+
+          <div class="card">
+            <h3>Pro Care</h3>
+            <p class="fdesc">Flag → direct Betti action, no operational step</p>
+            <div class="funnel-step"><span class="step-label">AI Transcript Flag</span><div class="bar-wrap"><i style="width:100%"></i></div><span class="step-val">300</span></div>
+            <div class="funnel-step"><span class="step-label">Actioned in Betti</span><div class="bar-wrap"><i class="done" style="width:92%"></i></div><span class="step-val">275</span></div>
+          </div>
+
+          <div class="card">
+            <h3>Homeowner Support + Services Pro</h3>
+            <p class="fdesc">Flag → SF Button → back office → Betti and/or Dash</p>
+            <div class="funnel-step"><span class="step-label">AI Transcript Flag</span><div class="bar-wrap"><i style="width:100%"></i></div><span class="step-val">600</span></div>
+            <div class="funnel-step"><span class="step-label">SF Button Submitted</span><div class="bar-wrap"><i style="width:90%"></i></div><span class="step-val">540</span></div>
+            <div class="funnel-step"><span class="step-label">Actioned in Betti/Dash</span><div class="bar-wrap"><i class="done" style="width:80%"></i></div><span class="step-val">480</span></div>
+          </div>
+
+          <div class="card">
+            <h3>Homeowner Success</h3>
+            <p class="fdesc">Flag → Genesys Dispo + SF form → back office → Betti and/or Dash</p>
+            <div class="funnel-step"><span class="step-label">AI Transcript Flag</span><div class="bar-wrap"><i style="width:100%"></i></div><span class="step-val">700</span></div>
+            <div class="funnel-step"><span class="step-label">Genesys Dispo + SF Form</span><div class="bar-wrap"><i style="width:86%"></i></div><span class="step-val">600</span></div>
+            <div class="funnel-step"><span class="step-label">Actioned in Betti/Dash</span><div class="bar-wrap"><i class="done" style="width:80%"></i></div><span class="step-val">560</span></div>
+          </div>
+
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Compliance Breakdown</h2>
+          <p id="breakdown-scope-label">Every flagged interaction, all domains combined</p>
+        </div>
+        <div class="card">
+          <div class="stackbar" id="stackbar">
+            <span style="width:83.4%;background:#3d9b6e;"></span>
+            <span style="width:4.4%;background:var(--watch);"></span>
+            <span style="width:6.3%;background:var(--heart);"></span>
+            <span style="width:5.9%;background:#c9c9c2;"></span>
+          </div>
+          <div class="legend" id="legend">
+            <span class="item"><span class="dot" style="background:#3d9b6e;"></span>Compliant — 1,710 (83.4%)</span>
+            <span class="item"><span class="dot" style="background:var(--watch);"></span>Process Non-Compliance — 90 (4.4%)</span>
+            <span class="item"><span class="dot" style="background:var(--heart);"></span>Non-Compliant — 130 (6.3%)</span>
+            <span class="item"><span class="dot" style="background:#c9c9c2;"></span>No DNC (false positive) — 120 (5.9%)</span>
+          </div>
+          <p class="note">Compliant = flag + all process steps + downstream action all complete. Process Non-Compliance = flagged and eventually actioned, but a step (SF form/Genesys dispo) was skipped — a coaching gap, action still happened. Non-Compliant = the Betti/Dash action was never taken — the actual legal-risk bucket. No DNC = regex flagged it but it wasn't a real request (false positive) — excluded from the non-compliance rate denominator above.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2 id="table-title">Rep Detail</h2>
+          <p>Click Manager/Rep above to filter · click a row for individual deal status (target behavior) · hover Actioned for what it means per domain</p>
+        </div>
+        <div class="card">
+          <table class="data">
+            <thead>
+              <tr><th>Rep</th><th>Manager</th><th>Domain</th><th class="num">Flags</th><th class="num" title="What counts as 'Actioned' differs by domain: Sales/Pro Care = rep updates Betti directly; Homeowner Support = back office updates Betti/Dash after SF Button; Homeowner Success = back office updates Betti/Dash after Genesys Dispo + SF Form.">Actioned ⓘ</th></tr>
+            </thead>
+            <tbody id="rep-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="footer">DNC Compliance Funnel · mock skeleton, illustrative data only · Angi brand tokens</div>
+    </div>
+
+    <script>
+      // ---- fake dataset -----------------------------------------------------
+      const REPS = [
+        { rep: "J. Alvarez", manager: "M. Chen",  domain: "Homeowner Success", flags: 14, actioned: 9,  status: "noncompliant" },
+        { rep: "S. Lund",    manager: "M. Chen",  domain: "Homeowner Success", flags: 9,  actioned: 9,  status: "compliant" },
+        { rep: "P. Ng",      manager: "M. Chen",  domain: "Homeowner Success", flags: 12, actioned: 11, status: "process" },
+        { rep: "D. Okafor",  manager: "R. Diaz",  domain: "Homeowner Support", flags: 11, actioned: 10, status: "process" },
+        { rep: "K. Fenwick", manager: "R. Diaz",  domain: "Homeowner Support", flags: 8,  actioned: 8,  status: "compliant" },
+        { rep: "T. Bui",     manager: "A. Marsh", domain: "Sales",            flags: 7,  actioned: 5,  status: "noncompliant" },
+        { rep: "C. Reyes",   manager: "A. Marsh", domain: "Pro Care",         flags: 6,  actioned: 6,  status: "compliant" },
+      ];
+      // per-manager regex/process alignment rate — independent axis, not derived from the rows above
+      const ALIGNMENT_BY_MANAGER = { "M. Chen": 89.5, "R. Diaz": 92.8, "A. Marsh": 93.1 };
+      const OVERALL_ALIGNMENT = 91.2;
+      const FALSE_POSITIVE_RATE = 0.059; // ~5.9% of any manager's flags assumed "No DNC" for illustration
+
+      const state = { grain: "director", manager: null, rep: null };
+
+      function scopedRows() {
+        if (state.grain === "rep" && state.rep) return REPS.filter((r) => r.rep === state.rep);
+        if (state.grain === "manager" && state.manager) return REPS.filter((r) => r.manager === state.manager);
+        return REPS;
+      }
+
+      function renderTable() {
+        const rows = scopedRows();
+        document.getElementById("rep-table-body").innerHTML = rows.map((r) =>
+          "<tr><td>" + r.rep + "</td><td>" + r.manager + "</td><td>" + r.domain + "</td>" +
+          '<td class="num">' + r.flags + '</td><td class="num">' + r.actioned + "</td></tr>"
+        ).join("");
+        document.getElementById("table-title").textContent =
+          state.grain === "rep" ? "Rep Detail — " + state.rep :
+          state.grain === "manager" ? "Rep Detail — " + state.manager + "'s Team" :
+          "Rep Detail — All Managers";
+      }
+
+      function renderKpis() {
+        const rows = scopedRows();
+        const totalFlags = rows.reduce((s, r) => s + r.flags, 0);
+        const totalActioned = rows.reduce((s, r) => s + r.actioned, 0);
+        const falsePositives = Math.round(totalFlags * FALSE_POSITIVE_RATE);
+        const trueDncFlags = totalFlags - falsePositives;
+        const nonCompliantCount = rows.filter((r) => r.status === "noncompliant").reduce((s, r) => s + (r.flags - r.actioned), 0);
+        const nonComplianceRate = trueDncFlags ? (nonCompliantCount / trueDncFlags) * 100 : 0;
+        const completionRate = totalFlags ? (totalActioned / totalFlags) * 100 : 0;
+        const alignment = state.grain === "manager" && state.manager ? ALIGNMENT_BY_MANAGER[state.manager]
+          : state.grain === "rep" && state.rep ? ALIGNMENT_BY_MANAGER[REPS.find((r) => r.rep === state.rep).manager]
+          : OVERALL_ALIGNMENT;
+
+        document.getElementById("kpi-flags").textContent = totalFlags.toLocaleString();
+        document.getElementById("kpi-flags-meta").textContent = "Includes ~" + falsePositives.toLocaleString() + " false positives (No DNC)";
+        document.getElementById("kpi-completion").textContent = completionRate.toFixed(1) + "%";
+        document.getElementById("kpi-alignment").textContent = alignment.toFixed(1) + "%";
+        const ncEl = document.getElementById("kpi-noncompliance");
+        const ncStatusEl = document.getElementById("kpi-noncompliance-status");
+        ncEl.textContent = nonComplianceRate.toFixed(1) + "%";
+        if (nonComplianceRate <= 2) {
+          ncEl.className = "value on"; ncStatusEl.className = "status on"; ncStatusEl.textContent = "On Track";
+        } else {
+          ncEl.className = "value off"; ncStatusEl.className = "status off"; ncStatusEl.textContent = "Off Track";
+        }
+
+        // compliance breakdown stack, scoped
+        const compliantCount = rows.filter((r) => r.status === "compliant").reduce((s, r) => s + r.actioned, 0);
+        const processCount = rows.filter((r) => r.status === "process").reduce((s, r) => s + r.actioned, 0);
+        const total = compliantCount + processCount + nonCompliantCount + falsePositives || 1;
+        const pct = (n) => (n / total) * 100;
+        const bars = [
+          ["#3d9b6e", compliantCount, "Compliant"],
+          ["var(--watch)", processCount, "Process Non-Compliance"],
+          ["var(--heart)", nonCompliantCount, "Non-Compliant"],
+          ["#c9c9c2", falsePositives, "No DNC (false positive)"],
+        ];
+        document.getElementById("stackbar").innerHTML = bars.map(([color, n]) =>
+          '<span style="width:' + pct(n).toFixed(1) + '%;background:' + color + ';"></span>'
+        ).join("");
+        document.getElementById("legend").innerHTML = bars.map(([color, n, label]) =>
+          '<span class="item"><span class="dot" style="background:' + color + ';"></span>' + label + " — " + n.toLocaleString() + " (" + pct(n).toFixed(1) + "%)</span>"
+        ).join("");
+        document.getElementById("breakdown-scope-label").textContent =
+          state.grain === "rep" ? "Scoped to " + state.rep :
+          state.grain === "manager" ? "Scoped to " + state.manager + "'s team" :
+          "Every flagged interaction, all domains combined";
+      }
+
+      function personnelOptions() {
+        if (state.grain === "director") return [{ id: "all", name: "All Managers" }];
+        if (state.grain === "manager") {
+          const names = [...new Set(REPS.map((r) => r.manager))];
+          return names.map((n) => ({ id: n, name: n }));
+        }
+        const pool = state.manager ? REPS.filter((r) => r.manager === state.manager) : REPS;
+        return pool.map((r) => ({ id: r.rep, name: r.rep }));
+      }
+
+      function renderPersonnelSelect() {
+        const sel = document.getElementById("personnel-select");
+        const opts = personnelOptions();
+        const selectedId = state.grain === "manager" ? state.manager : state.grain === "rep" ? state.rep : "all";
+        sel.innerHTML = opts.map((o) => '<option value="' + o.id + '"' + (o.id === selectedId ? " selected" : "") + ">" + o.name + "</option>").join("");
+      }
+
+      function syncCrumb() {
+        const parts = ["Director: All SMB/Homeowner Depts"];
+        if (state.manager) parts.push("Manager: " + state.manager);
+        if (state.rep) parts.push("Rep: " + state.rep);
+        document.getElementById("crumb").innerHTML = parts.map((p, i) => (i === parts.length - 1 ? "<span>" + p + "</span>" : p)).join(" / ");
+      }
+
+      function syncChips() {
+        document.getElementById("chip-director").setAttribute("aria-pressed", state.grain === "director" ? "true" : "false");
+        document.getElementById("chip-manager").setAttribute("aria-pressed", state.grain === "manager" ? "true" : "false");
+        const repChip = document.getElementById("chip-rep");
+        repChip.setAttribute("aria-pressed", state.grain === "rep" ? "true" : "false");
+        repChip.disabled = !state.manager;
+      }
+
+      function renderAll() { syncChips(); syncCrumb(); renderPersonnelSelect(); renderKpis(); renderTable(); }
+
+      document.getElementById("chip-director").addEventListener("click", () => {
+        state.grain = "director"; state.manager = null; state.rep = null; renderAll();
+      });
+      document.getElementById("chip-manager").addEventListener("click", () => {
+        if (!state.manager) state.manager = REPS[0].manager;
+        state.grain = "manager"; state.rep = null; renderAll();
+      });
+      document.getElementById("chip-rep").addEventListener("click", () => {
+        if (!state.manager) return;
+        if (!state.rep) { const pool = REPS.filter((r) => r.manager === state.manager); if (pool.length) state.rep = pool[0].rep; }
+        state.grain = "rep"; renderAll();
+      });
+      document.getElementById("personnel-select").addEventListener("change", (e) => {
+        const val = e.target.value;
+        if (state.grain === "manager") { state.manager = val; state.rep = null; }
+        else if (state.grain === "rep") { state.rep = val; state.manager = REPS.find((r) => r.rep === val).manager; }
+        renderAll();
+      });
+
+      renderAll();
+    </script>
+  </body>
+</html>
