@@ -371,9 +371,9 @@ function renderKPIs(){
   $('kpi-completion').textContent=pct(act,t.c);
   $('kpi-completion-meta').innerHTML=`<b>Final step only</b> (DNC applied in Betti/Dash): ${fmt(act)} of ${fmt(t.c)} flagged calls. Not the whole funnel.<br><b>Whole funnel completed</b> (Compliant): ${fmt(t.k)} (${pct(t.k,t.c)})`;
   const hs=domSum(2),sp=domSum(3),ho=hs.c+sp.c;
-  $('kpi-process').textContent=ho?fmt(hs.p+sp.p):'n/a';
+  $('kpi-process').textContent=ho?pct(hs.p+sp.p,t.c):'n/a';
   $('kpi-process-meta').innerHTML=ho
-    ?`<b>${fmt(hs.p+sp.p)}</b> of ${fmt(ho)} Homeowner flagged calls (${pct(hs.p+sp.p,ho)}) were <b>actioned in Betti/Dash</b>, but the <b>Genesys / SF step was not completed</b>.<br>Homeowner Success: ${fmt(hs.p)} (no Genesys DNC disposition and/or no SF DNC form) · Support + Services Pro: ${fmt(sp.p)} (no SF DNC form / Quick Action case)`
+    ?`<b>${fmt(hs.p+sp.p)}</b> of ${fmt(t.c)} flagged calls were <b>actioned in Betti/Dash</b>, but the <b>Genesys / SF step was not completed</b> (${pct(hs.p+sp.p,ho)} of the ${fmt(ho)} Homeowner flagged calls).<br>Homeowner Success: ${fmt(hs.p)} (no Genesys DNC disposition and/or no SF DNC form) · Support + Services Pro: ${fmt(sp.p)} (no SF DNC form / Quick Action case)`
     :'Homeowner orgs only. Pro Sales and Pro Care have no operational step.';
   $('breakdown-scope-label').textContent=(S.rep>=0?'Scoped to '+REPS[S.rep][0]:S.mi>=0?"Scoped to "+DIMS[S.mi][0]+"'s team":S.dir?'Scoped to '+S.dir+"'s org":'Every flagged call')+', '+(S.dom<0?'all domains combined':DOMS[S.dom]);
   const bars=[['#3d9b6e',t.k,'Compliant'],['#d97706',t.p,'Process Non-Compliance'],['#fc4647',t.n,'Non-Compliant']];
